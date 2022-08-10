@@ -9,7 +9,8 @@ const App = () => {
     {"id": 1, "title": "Task 2", "completed": false}
   ]);
 
-  const addTask = (value) => {
+  const addTask = (value, e) => {
+    e.preventDefault();
     if (value === '') return
     const newTask = { id: tasks.length, title: value, completed: false}
     setTasks([...tasks, newTask])
