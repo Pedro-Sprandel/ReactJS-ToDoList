@@ -5,8 +5,8 @@ import { Form, Task } from './components';
 const App = () => {
 
   const [tasks, setTasks] = useState([
-    {"id": 0, "title": "Task 1", "completed": true},
-    {"id": 1, "title": "Task 2", "completed": false}
+    // {"id": 0, "title": "Task 1", "completed": true},
+    // {"id": 1, "title": "Task 2", "completed": false}
   ]);
 
   const addTask = (value, e) => {
@@ -29,7 +29,10 @@ const App = () => {
 
   const deleteTask = (id) => {
     const updatedTaskList = tasks.filter((task) => task.id !== id)
-    setTasks(updatedTaskList)
+    const updatedTasksIndex = updatedTaskList.map((task) => {
+      return ({...task, id: updatedTaskList.indexOf(task)})
+    })
+    setTasks(updatedTasksIndex)
   };
 
   return (
