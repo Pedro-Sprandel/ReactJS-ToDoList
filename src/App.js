@@ -15,8 +15,9 @@ const App = () => {
     setTasks([...tasks, newTask])
   };
 
-  const updateStatus = () => {
-
+  const deleteTask = (id) => {
+    const updatedTaskList = tasks.filter((task) => task.id !== id)
+    setTasks(updatedTaskList)
   };
 
   return (
@@ -33,7 +34,7 @@ const App = () => {
 
       {tasks.map((task, index) => (
         <div className={index < tasks.length - 1 ? "w-1/3 mb-4" : "w-1/3"}>
-          <Task data={task} />
+          <Task data={task} handleDelete={deleteTask} />
         </div>
       ))}
     </div>
