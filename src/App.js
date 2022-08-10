@@ -5,7 +5,7 @@ import { Form, Task } from './components';
 const App = () => {
 
   const [tasks, setTasks] = useState([
-    {"id": 0, "title": "Task 1", "completed": false},
+    {"id": 0, "title": "Task 1", "completed": true},
     {"id": 1, "title": "Task 2", "completed": false}
   ]);
 
@@ -15,6 +15,17 @@ const App = () => {
     const newTask = { id: tasks.length, title: value, completed: false}
     setTasks([...tasks, newTask])
   };
+
+  const changeTaskStatus = (id) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return ({...task, completed: !task.completed})
+      } else {
+        return task
+      }
+    })
+    setTasks(updatedTasks)
+  }
 
   const deleteTask = (id) => {
     const updatedTaskList = tasks.filter((task) => task.id !== id)
@@ -35,7 +46,7 @@ const App = () => {
 
       {tasks.map((task, index) => (
         <div className={index < tasks.length - 1 ? "w-1/3 mb-4" : "w-1/3"}>
-          <Task data={task} handleDelete={deleteTask} />
+          <Task data={task} handleDelete={deleteTask} onChangeStatus={changeTaskStatus} />
         </div>
       ))}
     </div>
