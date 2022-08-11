@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { EditForm, Form, Task } from './components';
 
-const App = () => {
+export default function App () {
+  console.log('renderizou');
 
   const [tasks, setTasks] = useState([]);
 
   const [isEdit, setIsEdit]= useState(false);
-
-  const [editValue, setEditValue] = useState('');
+  const [taskToEdit, setTaskToEdit] = useState({});
 
   const addTask = (value, e) => {
+    console.log('addTask');
     e.preventDefault();
     if (value === '') return
     const newTask = { id: tasks.length, title: value, completed: false}
@@ -18,6 +19,7 @@ const App = () => {
   };
 
   const changeTaskStatus = (id) => {
+    console.log('changeTaskStatus');
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
         return ({...task, completed: !task.completed})
@@ -28,27 +30,32 @@ const App = () => {
     setTasks(updatedTasks)
   }
 
-  const editTask = (text) => {
-    setIsEdit(true)
-    setEditValue(text);
+  const editTask = (data) => {
+    console.log('editTask');
+    setIsEdit(true);
+    setTaskToEdit(data);
   };
 
-  const saveEdit = (id, text) => {
+  const saveEdit = (text) => {
+    console.log('saveEdit');
     const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
+      if (task === taskToEdit) {
         return ({...task, title: text})
       } else {
         return task
       }
     })
     setTasks(updatedTasks)
+    setIsEdit(false);
   }
 
   const cancelEdit = () => {
+    console.log('cancelEdit');
     setIsEdit(false);
   }; 
 
   const deleteTask = (id) => {
+    console.log('deleteTask');
     const updatedTaskList = tasks.filter((task) => task.id !== id)
     const updatedTasksIndex = updatedTaskList.map((task) => {
       return ({...task, id: updatedTaskList.indexOf(task)})
@@ -66,7 +73,7 @@ const App = () => {
 
       <div className="my-12 w-1/2">
         {isEdit ? (
-          <EditForm value={editValue} setValue={setEditValue} handleSave={saveEdit} handleCancel={cancelEdit} />
+          <EditForm initialValue={taskToEdit.title} handleSave={saveEdit} handleCancel={cancelEdit} />
         ) : (
           <Form handleSubmit={addTask} />
         )}
@@ -74,11 +81,9 @@ const App = () => {
 
       {tasks.map((task, index) => (
         <div className={index < tasks.length - 1 ? "w-1/2 mb-4" : "w-1/2"}>
-          <Task id={task.id} data={task} handleEdit={editTask} handleDelete={deleteTask} onChangeStatus={changeTaskStatus} />
+          <Task data={task} handleEdit={editTask} handleDelete={deleteTask} onChangeStatus={changeTaskStatus} />
         </div>
       ))}
     </div>
   );
 }
-
-export default App;

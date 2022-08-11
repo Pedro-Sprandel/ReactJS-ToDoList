@@ -17,7 +17,7 @@ export const Task = (props) => {
           className="bg-blue-500 text-white font-semibold rounded px-2 py-1 mr-2"
           onClick={(e) => {
             e.stopPropagation();
-            handleEdit(data.title);
+            handleEdit(data);
           }}
         >
           Edit
