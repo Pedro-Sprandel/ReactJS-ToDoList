@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Task = (props) => {
-  const { data, handleDelete, onChangeStatus } = props;
+  const { data, handleEdit, handleDelete, onChangeStatus } = props;
 
   return (
     <div
@@ -12,14 +12,25 @@ export const Task = (props) => {
         <p>{data.id + 1}</p>
         <p className={data.completed && 'line-through'}>{data.title}</p>
       </div>
-      <button 
-        className="bg-red-500 rounded px-2 py-1"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleDelete(data.id);
-        }}>
-        Delete
-      </button>
+      <div>
+        <button
+          className="bg-blue-500 text-white font-semibold rounded px-2 py-1 mr-2"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleEdit(data.title);
+          }}
+        >
+          Edit
+        </button>
+        <button 
+          className="bg-red-500 rounded font-semibold px-2 py-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete(data.id);
+          }}>
+          Delete
+        </button>
+      </div>
     </div>
   )
 };

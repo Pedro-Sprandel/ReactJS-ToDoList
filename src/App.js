@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Form, Task } from './components';
+import { EditForm, Form, Task } from './components';
 
 const App = () => {
 
-  const [tasks, setTasks] = useState([
-    // {"id": 0, "title": "Task 1", "completed": true},
-    // {"id": 1, "title": "Task 2", "completed": false}
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  const [isEdit, setIsEdit]= useState(false);
+
+  const [editValue, setEditValue] = useState('');
 
   const addTask = (value, e) => {
     e.preventDefault();
@@ -27,6 +28,26 @@ const App = () => {
     setTasks(updatedTasks)
   }
 
+  const editTask = (text) => {
+    setIsEdit(true)
+    setEditValue(text);
+  };
+
+  const saveEdit = (id, text) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return ({...task, title: text})
+      } else {
+        return task
+      }
+    })
+    setTasks(updatedTasks)
+  }
+
+  const cancelEdit = () => {
+    setIsEdit(false);
+  }; 
+
   const deleteTask = (id) => {
     const updatedTaskList = tasks.filter((task) => task.id !== id)
     const updatedTasksIndex = updatedTaskList.map((task) => {
@@ -43,13 +64,17 @@ const App = () => {
 
       <h1 className="text-4xl text-white">My to do list</h1>
 
-      <div className="my-12 w-1/3">
-        <Form handleSubmit={addTask} />
+      <div className="my-12 w-1/2">
+        {isEdit ? (
+          <EditForm value={editValue} setValue={setEditValue} handleSave={saveEdit} handleCancel={cancelEdit} />
+        ) : (
+          <Form handleSubmit={addTask} />
+        )}
       </div>
 
       {tasks.map((task, index) => (
-        <div className={index < tasks.length - 1 ? "w-1/3 mb-4" : "w-1/3"}>
-          <Task data={task} handleDelete={deleteTask} onChangeStatus={changeTaskStatus} />
+        <div className={index < tasks.length - 1 ? "w-1/2 mb-4" : "w-1/2"}>
+          <Task id={task.id} data={task} handleEdit={editTask} handleDelete={deleteTask} onChangeStatus={changeTaskStatus} />
         </div>
       ))}
     </div>
