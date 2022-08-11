@@ -3,15 +3,12 @@ import { Helmet } from 'react-helmet';
 import { EditForm, Form, Task } from './components';
 
 export default function App () {
-  console.log('renderizou');
-
   const [tasks, setTasks] = useState([]);
 
   const [isEdit, setIsEdit]= useState(false);
   const [taskToEdit, setTaskToEdit] = useState({});
 
   const addTask = (value, e) => {
-    console.log('addTask');
     e.preventDefault();
     if (value === '') return
     const newTask = { id: tasks.length, title: value, completed: false}
@@ -19,7 +16,6 @@ export default function App () {
   };
 
   const changeTaskStatus = (id) => {
-    console.log('changeTaskStatus');
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
         return ({...task, completed: !task.completed})
@@ -31,13 +27,11 @@ export default function App () {
   }
 
   const editTask = (data) => {
-    console.log('editTask');
     setIsEdit(true);
     setTaskToEdit(data);
   };
 
   const saveEdit = (text) => {
-    console.log('saveEdit');
     const updatedTasks = tasks.map((task) => {
       if (task === taskToEdit) {
         return ({...task, title: text})
@@ -50,7 +44,6 @@ export default function App () {
   }
 
   const cancelEdit = () => {
-    console.log('cancelEdit');
     setIsEdit(false);
   }; 
 
@@ -66,12 +59,12 @@ export default function App () {
   return (
     <div className="app flex flex-col items-center">
       <Helmet>
-        <style>{'body {background-color: rgb(55, 65, 81); padding: 5vw;} '}</style>
+        <style>{'body {background-color: rgb(55, 65, 81);} '}</style>
       </Helmet>
 
-      <h1 className="text-4xl text-white">My to do list</h1>
+      <h1 className="text-4xl mt-12 text-white">My to do list</h1>
 
-      <div className="my-12 w-1/2">
+      <div className="my-12 lg:w-1/2 w-5/6">
         {isEdit ? (
           <EditForm initialValue={taskToEdit.title} handleSave={saveEdit} handleCancel={cancelEdit} />
         ) : (
@@ -80,7 +73,7 @@ export default function App () {
       </div>
 
       {tasks.map((task, index) => (
-        <div className={index < tasks.length - 1 ? "w-1/2 mb-4" : "w-1/2"}>
+        <div className={index < tasks.length - 1 ? "lg:w-1/2 w-5/6 mb-4" : "lg:w-1/2 w-5/6"}>
           <Task data={task} handleEdit={editTask} handleDelete={deleteTask} onChangeStatus={changeTaskStatus} />
         </div>
       ))}
